@@ -8,6 +8,7 @@ export const banCommand: Command = {
   trigger: "ban",
   description: "Bane um usuário do grupo (uso: !ban <userId> <motivo>)",
   minRole: "admin",
+  bot: "mod",
   async execute({ message, args, actuator, settings }) {
     const [userId, ...reasonParts] = args;
     if (!userId) {

@@ -53,6 +53,12 @@ export class MessageRepository {
     return alert;
   }
 
+  /** `createdAt` da mensagem mais nova já gravada, ou `null` se o banco está vazio. */
+  getLatestMessageAt(): string | null {
+    const row = this.db.prepare(`SELECT MAX(createdAt) AS latest FROM messages`).get() as { latest: string | null };
+    return row.latest;
+  }
+
   /** Retorna as últimas `limit` mensagens, mais recentes primeiro. */
   getRecentMessages(limit: number): ChatMessage[] {
     return this.db

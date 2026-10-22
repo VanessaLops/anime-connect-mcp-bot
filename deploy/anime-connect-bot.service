@@ -1,0 +1,18 @@
+[Unit]
+Description=Anime Connect MCP bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=animebot
+WorkingDirectory=/opt/anime-connect-bot
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+# o servidor MCP usa stdio; sem cliente conectado, só o polling do chat roda
+StandardInput=null
+
+[Install]
+WantedBy=multi-user.target

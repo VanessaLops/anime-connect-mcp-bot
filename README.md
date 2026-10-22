@@ -10,7 +10,8 @@ como ferramentas para um assistente de IA (Claude) consultar.
 - `src/domain` — entidades (`ChatMessage`, `Alert`), regras puras (detecção de palavras-chave)
   e `botSettings.ts` (personalização por grupo, ver abaixo).
 - `src/actuation` — escreve de volta no chat (`FirebaseActuator`) ou só loga (`DryRunActuator`).
-- `src/agent` — comandos do chat (`!ping`, `!help`, `!ban`) e permissões por cargo.
+- Dois bots por grupo, independentes: **moderador** (`has_bot`, config em `bot_settings`) e **DJ** (`has_dj`). Cada um fala com seu próprio usuário-bot (`bot_kind`); cada comando declara qual bot responde (`Command.bot`).
+- `src/agent` — comandos do chat (`!ping`, `!help`, `!ban`, bot DJ: `!play`, `!radio`, `!radios`, `!fila`, `!pular`, `!stop`) e permissões por cargo — pedir, pular e encerrar música é só pra dono/subdono/staff; pedido com algo tocando vai pra fila (`src/music/dj.ts`).
 - `src/storage` — persistência em SQLite (`MessageRepository`).
 - `src/mcp` — servidor MCP com as tools `get_recent_messages`, `search_messages`,
   `get_recent_alerts`.
@@ -31,7 +32,8 @@ bot), o que grava em `groups/{id}/bot_settings` no Realtime Database:
   `KEYWORD_ALERTS`/`BADWORDS` globais do `.env` para aquele grupo.
 
 Grupo sem `bot_settings` salvo usa os defaults de `src/domain/botSettings.ts`
-(`DEFAULT_BOT_SETTINGS`), com `active: false` por segurança.
+(`DEFAULT_BOT_SETTINGS`), com `active: true` — ligar o bot no grupo (`has_bot`) já basta pra ele
+responder; o dono desliga pelo `active` se quiser.
 
 ## Rodar
 
